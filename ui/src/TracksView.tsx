@@ -46,7 +46,6 @@ const TracksView = (props: TrackViewProps) => {
 
     return (
     <main style={{position: 'relative'}}>
-        <p>TRACKSSSSSSS</p>
       <div style={{
         width: '100%',
         display: 'flex',

@@ -31,7 +31,6 @@ const MyWallet: React.FC = () => {
                 <p>
                     Your wallet is {walletAddress}
                 </p>
-                <p>TRACKS</p>
                 <TracksView connection={connection} userKey={wallet.publicKey}></TracksView> 
                 </>
                 ||
