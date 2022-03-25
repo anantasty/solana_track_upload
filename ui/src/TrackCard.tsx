@@ -70,6 +70,7 @@ const TrackCard = (props: TrackProps) => {
                         height="140"
                         key={Date.now()}
                         src={link}
+                        autoPlay
                       />
                     ) : (
                       <div>
