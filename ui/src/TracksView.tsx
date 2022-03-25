@@ -38,9 +38,15 @@ const TracksView = (props: TrackViewProps) => {
     }
 
     useEffect(refreshTrackState, [props.program, wallet, props.userKey, props.connection, props.client]);
-
+    props.program?.addEventListener("TrackEvent", (event, slot) => {
+      console.log(`event: ${event}, slot: ${slot}`)
+      console.log(event)
+    })
     return (
     <main style={{position: 'relative'}}>
+          <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+            <TrackCard tracks={myTracks}></TrackCard>
+          </div>      
       <div style={{
         width: '100%',
         display: 'flex',
@@ -48,7 +54,7 @@ const TracksView = (props: TrackViewProps) => {
         justifyContent: 'center',
         minHeight: 100,
       }}
-      >
+      >      
           <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
             <TrackCard tracks={allTracks}></TrackCard>
           </div>

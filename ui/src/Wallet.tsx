@@ -70,7 +70,6 @@ const Wallet: React.FC = () => {
                 <TrackUpload ipfs={ipfsClient} connection={connection} wallet={wallet} program={program}/>
             </div>
             <div>
-                <h1>List of Tracks</h1>
                 <TracksView connection={connection} userKey={wallet.publicKey} client={ipfsClient} program={program}></TracksView> 
             </div>
         </>
