@@ -14,7 +14,7 @@ pub mod track_upload {
     ) -> Result<()> {
         let track = &mut ctx.accounts.track;
         // Validate Lengths
-        require!(cid.chars().count() <= 47, TrackError::InvalidCID);
+        require!(cid.chars().count() <= 60, TrackError::InvalidCID);
         track.signer = ctx.accounts.signer.key();
         track.cid = cid;
         if let Some(a) = artist {
@@ -29,7 +29,9 @@ pub mod track_upload {
         emit!(TrackEvent::new(
             &track.cid,
             &track.artist,
-            &track.track_title
+            &track.track_title,
+            &track.signer,
+            &track.key()
         ));
         Ok(())
     }
@@ -63,7 +65,9 @@ pub mod track_upload {
         emit!(TrackEvent::new(
             &track.cid,
             &track.artist,
-            &track.track_title
+            &track.track_title,
+            &track.signer,
+            &track.key()
         ));
         Ok(())
     }
@@ -100,14 +104,24 @@ pub struct TrackEvent {
     pub cid: String,
     pub artist: String,
     pub track_title: String,
+    pub signer: Pubkey,
+    pub track: Pubkey,
 }
 
 impl TrackEvent {
-    pub fn new(cid: &str, artist: &str, title: &str) -> TrackEvent {
+    pub fn new(
+        cid: &str, 
+        artist: &str, 
+        title: &str,
+        signer: &Pubkey,
+        track: &Pubkey
+    ) -> TrackEvent {
         TrackEvent {
             cid: cid.to_string(),
             artist: artist.to_string(),
             track_title: title.to_string(),
+            signer: *signer,
+            track: *track
         }
     }
 }

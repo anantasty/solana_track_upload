@@ -139,8 +139,8 @@ const UploadImages = (props: UploadProps) => {
         )}
         {tx && (
           <div className="alert alert-secondary mt-4">
-            <p>Success: {tx} </p>
             <p>Track: {track}</p>
+            <img className="preview" src={URL.createObjectURL(previewImage)} alt="" />            
           </div>
         )}
       </>
