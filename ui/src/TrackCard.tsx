@@ -13,15 +13,33 @@ import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Icon from "@mui/material/Icon";
+import { IPFS } from "ipfs-core";
+import { get_infura_link } from "./contract/interact_track";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface TrackProps {
   tracks: Track[];
+  client: IPFS;
 }
 const TrackCard = (props: TrackProps) => {
-  console.log("track==>", props.tracks);
-
+  const [stateTrigger, setStateTrigger] = useState(Math.random());
+  const populateLinks = () => {
+    console.log("adding links");
+    (async () => {
+      if (!props.tracks) {
+        return;
+      }
+      for (const track of props.tracks) {
+        const link = await get_infura_link(track.cid, props.client);
+        track.extra = link;
+        setStateTrigger(Math.random());
+      }
+    })();
+    console.log("set state");
+  };
+  useEffect(populateLinks, [props.client, props.tracks]);
   return (
-    <main>
+    <main key={stateTrigger}>
       <div className={`card mt-3 p-5 ${props.tracks ? "" : "d-none"}`}>
         <Grid
           container
@@ -30,20 +48,25 @@ const TrackCard = (props: TrackProps) => {
         >
           {props.tracks &&
             props.tracks.map((track, index) => {
-              const link = track.extra
-                ? (track.extra[0] as string)
-                : track.get_infura_url();
+              const link = track.extra ? (track.extra[0] as string) : null;
               return (
                 <Grid item xs={4} sm={4} md={4} key={index}>
                   <Card
                     sx={{ maxWidth: 345, margin: "auto", borderRadius: "10px" }}
                   >
-                    <CardMedia
-                      component="img"
-                      alt="green iguana"
-                      height="140"
-                      image={link}
-                    />
+                    {link ? (
+                      <CardMedia
+                        component="img"
+                        alt="green iguana"
+                        height="140"
+                        key={Date.now()}
+                        image={link}
+                      />
+                    ) : (
+                      <div>
+                        <CircularProgress color="secondary" />
+                      </div>
+                    )}
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="div">
                         {track.title}
