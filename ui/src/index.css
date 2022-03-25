@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.header-wrapper {
+  /* height: 150px; */
+  margin-top: 20px;
+}
+
+
+.track-upload {
+  /* height: 300px; */
+  color: black;
+  background-color: white;
+  padding: 50px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  border-radius: 10px;
+}
+
+.content {
+  margin: 20px 0;
+}
+
+.preview {
+  max-width: 100px;
+}
