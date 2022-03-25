@@ -20,16 +20,19 @@ export interface TrackState {
   myTracks: Track[];
 }
 
-const get_infura_url = (cid: String) => {
+export const get_infura_url = (cid: String) => {
   return `${infura_browse}/${cid}`;
 };
-const get_infura_link = async (path: String, client: IPFS) => {
+export const get_infura_link = async (
+  path: String,
+  client: IPFS
+): Promise<String[]> => {
   const result = [];
   try {
     const dag = await client.dag.get(CID.parse(path as string));
     result.push(get_infura_url(`${dag.value.cid}/${dag.value.file}`));
   } catch (e) {
-    result.push(e);
+    result.push(e.toString());
   }
   return result;
 };
@@ -39,15 +42,15 @@ export const track_to_model = async (
 ): Promise<Track[]> => {
   const track_models: Track[] = [];
   for (const track of tracks) {
-    const link_ = await get_infura_link(track.account.cid, client);
-    const link = link_ ? link_ : [get_infura_url(track.account.cid)];
+    // const link_ = await get_infura_link(track.account.cid, client);
+    // const link = link_ ? link_ : [get_infura_url(track.account.cid)];
     track_models.push(
       new Track(
         track.account.cid,
         track.account.artist,
         track.account.trackTitle,
-        track.publicKey,
-        link
+        track.publicKey
+        // link
       )
     );
   }

@@ -69,7 +69,7 @@ const TracksView = (props: TrackViewProps) => {
           justifyContent: "space-between",
         }}
       >
-        <TrackCard tracks={myTracks}></TrackCard>
+        <TrackCard tracks={myTracks} client={props.client}></TrackCard>
       </div>
       <div
         style={{
@@ -88,7 +88,7 @@ const TracksView = (props: TrackViewProps) => {
             justifyContent: "space-between",
           }}
         >
-          <TrackCard tracks={allTracks}></TrackCard>
+          <TrackCard tracks={allTracks} client={props.client}></TrackCard>
         </div>
       </div>
     </main>

@@ -28,7 +28,7 @@ const Wallet: React.FC = () => {
       if (ipfsClient && ipfsClient?.isOnline()) {
         return;
       }
-      const client = await create();
+      const client = await create({ repo: "ok" + Math.random() });
       setIpfsClient(client);
     })();
     console.log(`ipfs_status: ${ipfsClient}`);
