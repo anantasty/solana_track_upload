@@ -22,6 +22,7 @@ interface TrackProps {
   client: IPFS;
 }
 const TrackCard = (props: TrackProps) => {
+  const [stateMap, setStateMap] = useState(new Map<String,String[]>());
   const [stateTrigger, setStateTrigger] = useState(Math.random());
   const populateLinks = () => {
     console.log("adding links");
@@ -30,8 +31,10 @@ const TrackCard = (props: TrackProps) => {
         return;
       }
       for (const track of props.tracks) {
-        const link = await get_infura_link(track.cid, props.client);
+        const link = (stateMap && stateMap.get(track.cid))?stateMap.get(track.cid) : await get_infura_link(track.cid, props.client);
+        stateMap.set(track.cid, link)
         track.extra = link;
+        setStateMap(stateMap);
         setStateTrigger(Math.random());
       }
     })();
