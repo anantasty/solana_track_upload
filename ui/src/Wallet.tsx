@@ -15,7 +15,7 @@ import TrackUpload from './TrackUpload';
 import { create, IPFS } from "ipfs-core";
 
 import * as anchor from "@project-serum/anchor";
-import { ProgramAccount, Program } from "@project-serum/anchor";
+import { Program } from "@project-serum/anchor";
 const PROGRAM_ID = "Bou2Yfi3uVrHi1FxHuHcgYFa5Q5M4bSoXK3NHpZy8Zd6"
 const Wallet: React.FC = () => {
     const { connection } = useConnection();
