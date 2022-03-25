@@ -35,7 +35,13 @@ const main = async () => {
   let cid = args.cid ? args.cid : "";
   if (args.path) {
     const node = await create();
-    cid = await upload_file(args.path);
+    cid = await upload_file(
+      args.path,
+      key.toString(),
+      signer.publicKey.toString(),
+      args.artist,
+      args.title
+    );
   }
 
   let trackState = await program.account.track.fetch(key);

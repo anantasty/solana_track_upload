@@ -35,7 +35,13 @@ const main = async () => {
   let cid = args.cid ? args.cid : "";
 
   if (args.path) {
-    cid = await upload_file(args.path);
+    cid = await upload_file(
+      args.path,
+      track.publicKey.toString(),
+      signer.publicKey.toString(),
+      args.artist,
+      args.title
+    );
   }
 
   const tx = await program.rpc.initialize(cid, args.artist, args.title, {
