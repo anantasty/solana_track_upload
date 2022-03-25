@@ -16,6 +16,7 @@ import Icon from "@mui/material/Icon";
 import { IPFS } from "ipfs-core";
 import { get_infura_link } from "./contract/interact_track";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { ClassNames } from "@emotion/react";
 
 interface TrackProps {
   tracks: Track[];
@@ -41,6 +42,11 @@ const TrackCard = (props: TrackProps) => {
     console.log("set state");
   };
   useEffect(populateLinks, [props.client, props.tracks]);
+  const getMediaType = (path) => {
+    const end: String = path?.split(".")?.pop();
+    if (['mp4', 'avi', 'webm', 'wmv', 'mkv'].includes(end.trim().toLowerCase())) 
+    {return 'video'} else {return 'img'}
+  }
   return (
     <main key={stateTrigger}>
       <div className={`card mt-3 p-5 ${props.tracks ? "" : "d-none"}`}>
@@ -59,7 +65,7 @@ const TrackCard = (props: TrackProps) => {
                   >
                     {link ? (
                       <CardMedia
-                        component="img"
+                        component={getMediaType(link)}
                         alt="green iguana"
                         height="140"
                         key={Date.now()}
