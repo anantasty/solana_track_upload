@@ -63,7 +63,7 @@ const TrackCard = (props: TrackProps) => {
                         alt="green iguana"
                         height="140"
                         key={Date.now()}
-                        image={link}
+                        src={link}
                       />
                     ) : (
                       <div>
