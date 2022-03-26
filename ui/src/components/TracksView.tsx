@@ -61,10 +61,13 @@ const TracksView = (props: TrackViewProps) => {
        event.artist, 
        event.trackTItle,
        event.track);
+       console.log("tracks length "+ allTracks?.length);
+       console.log(allTracks);
+       console.log("THIS");
+       console.log(this);
        (async ()=> new_track.extra = await get_infura_link(event.cid, props.client))();
        console.log(`event: ${event}, slot: ${slot}`);
        console.log(event);
-      console.log(wallet.publicKey)
     if (wallet.publicKey.toString() === event.signer.toString()) {
       if (myTracks){myTracks.push(new_track)
       setMyTracks(myTracks)}
@@ -72,6 +75,9 @@ const TracksView = (props: TrackViewProps) => {
     if (allTracks){
     allTracks.push(new_track)
     setAllTracks(allTracks)}
+    console.log("tracks length2 "+ allTracks?.length);
+    console.log(allTracks)
+
   });
   return (
     <main style={{ position: "relative" }}>
