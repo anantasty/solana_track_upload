@@ -55,7 +55,7 @@ export const track_to_model = async (
 export const uploadToIpfs = async (file: File, ipfs: IPFS, setProgress?:React.Dispatch<number>) => {
   let client: IPFS;
   const options = { wrapWithDirectory: true }
-  if (setProgress) {options["progress"] = (prog) => setProgress(prog)}
+  if (setProgress) {options["progress"] = (prog) => setProgress((prog/file.size)*100)}
   if (ipfs && ipfs?.isOnline()) {
     client = ipfs;
   } else client = await create();
