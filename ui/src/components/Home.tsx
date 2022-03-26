@@ -22,7 +22,7 @@ import Grid from '@mui/material/Grid';
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 
-const PROGRAM_ID = "Bou2Yfi3uVrHi1FxHuHcgYFa5Q5M4bSoXK3NHpZy8Zd6";
+const PROGRAM_ID = "6yT4AFpityTwxz7AdVrSJTckGyPyrXL8MKuutmBbDTnj";
 const Home: React.FC = () => {
   const { connection } = useConnection();
   const anchorWallet = useAnchorWallet();

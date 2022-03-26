@@ -7,6 +7,7 @@ import {
   TrackContract,
   TrackState,
   getTracks,
+  get_infura_link,
 } from "../contract/interact_track";
 import { Track } from "../contract/track_model";
 import TrackCard from "./TrackCard";
@@ -44,7 +45,6 @@ const TracksView = (props: TrackViewProps) => {
       setTrackState(trackState);
       setTrackContract(trackState.trackContract);
       setAllTracks(trackState.allTracks);
-      /*             const tracks = await allTracks.map(async t=> {t.link=await t.get_infura_link(); return t}) */
     })();
   };
 
@@ -56,8 +56,22 @@ const TracksView = (props: TrackViewProps) => {
     props.client,
   ]);
   props.program?.addEventListener("TrackEvent", (event, slot) => {
-    console.log(`event: ${event}, slot: ${slot}`);
-    console.log(event);
+    const new_track = new Track(
+      event.cid,
+       event.artist, 
+       event.trackTItle,
+       event.track);
+       (async ()=> new_track.extra = await get_infura_link(event.cid, props.client))();
+       console.log(`event: ${event}, slot: ${slot}`);
+       console.log(event);
+      console.log(wallet.publicKey)
+    if (wallet.publicKey.toString() === event.signer.toString()) {
+      if (myTracks){myTracks.push(new_track)
+      setMyTracks(myTracks)}
+    }
+    if (allTracks){
+    allTracks.push(new_track)
+    setAllTracks(allTracks)}
   });
   return (
     <main style={{ position: "relative" }}>

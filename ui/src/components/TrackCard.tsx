@@ -67,8 +67,8 @@ const TrackCard = (props: TrackProps) => {
                       <CardMedia
                         component={getMediaType(link)}
                         alt="green iguana"
-                        height="140"
-                        key={Date.now()}
+                        height="200"
+                        title={track.title as string}
                         src={link}
                         autoPlay
                         controls
@@ -96,7 +96,7 @@ const TrackCard = (props: TrackProps) => {
                       <Typography
                         variant="body2"
                         color="text.secondary"
-                        style={{ padding: "5px", fontWeight: "bold" }}
+                        style={{ padding: "5px", fontWeight: "italics" }}
                       >
                         {track.cid}
                       </Typography>
