@@ -1,7 +1,6 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 import {
   ConnectionProvider,
@@ -18,8 +17,8 @@ import {
   getTorusWallet,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
-import Wallet from "./Wallet";
-import TracksView from "./TracksView";
+import Home from "./components/Home";
+import TracksView from "./components/TracksView";
 
 function App() {
   // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
@@ -45,10 +44,8 @@ function App() {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets}>
-        <div className="App">
-          <header className="App-header">
-            <Wallet />
-          </header>
+        <div className="">
+            <Home />
         </div>
       </WalletProvider>
     </ConnectionProvider>

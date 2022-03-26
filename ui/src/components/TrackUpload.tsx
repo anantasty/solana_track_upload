@@ -1,15 +1,13 @@
-import UploadImages, { UploadProps } from "./image-upload.component";
+import UploadImage, { UploadProps } from "./UploadImage"
 
 const TrackUpload = (props: UploadProps) => {
   return (
-    <div className="upload-track">
-      <UploadImages
+      <UploadImage
         ipfs={props.ipfs}
         connection={props.connection}
         wallet={props.wallet}
         program={props.program}
       />
-    </div>
   );
 };
 
