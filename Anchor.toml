@@ -1,10 +1,10 @@
 [features]
 seeds = false
 [programs.localnet]
-track_upload = "Bou2Yfi3uVrHi1FxHuHcgYFa5Q5M4bSoXK3NHpZy8Zd6"
+track_upload = "6yT4AFpityTwxz7AdVrSJTckGyPyrXL8MKuutmBbDTnj"
 
 [programs.devnet]
-track_upload = "Bou2Yfi3uVrHi1FxHuHcgYFa5Q5M4bSoXK3NHpZy8Zd6"
+track_upload = "6yT4AFpityTwxz7AdVrSJTckGyPyrXL8MKuutmBbDTnj"
 
 [registry]
 url = "https://anchor.projectserum.com"

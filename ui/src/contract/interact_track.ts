@@ -4,9 +4,10 @@ import { Track } from "./track_model";
 
 import { create, IPFS, CID } from "ipfs-core";
 import { WalletContextState } from "@solana/wallet-adapter-react";
+import React from "react";
 
 const infura_browse = "https://ipfs.infura.io/ipfs";
-const PROGRAM_ID = "Bou2Yfi3uVrHi1FxHuHcgYFa5Q5M4bSoXK3NHpZy8Zd6";
+const PROGRAM_ID = "6yT4AFpityTwxz7AdVrSJTckGyPyrXL8MKuutmBbDTnj";
 
 export interface TrackContract {
   id: anchor.web3.PublicKey;
@@ -23,10 +24,7 @@ export interface TrackState {
 export const get_infura_url = (cid: String) => {
   return `${infura_browse}/${cid}`;
 };
-export const get_infura_link = async (
-  path: String,
-  client: IPFS
-): Promise<String[]> => {
+export const get_infura_link = async (path: String, client: IPFS): Promise<String[]> => {
   const result = [];
   try {
     const dag = await client.dag.get(CID.parse(path as string));
@@ -42,29 +40,28 @@ export const track_to_model = async (
 ): Promise<Track[]> => {
   const track_models: Track[] = [];
   for (const track of tracks) {
-    // const link_ = await get_infura_link(track.account.cid, client);
-    // const link = link_ ? link_ : [get_infura_url(track.account.cid)];
     track_models.push(
       new Track(
         track.account.cid,
         track.account.artist,
         track.account.trackTitle,
-        track.publicKey
-        // link
+        track.publicKey,
       )
     );
   }
   return track_models;
 };
 
-export const uploadToIpfs = async (file: File, ipfs: IPFS) => {
+export const uploadToIpfs = async (file: File, ipfs: IPFS, setProgress?:React.Dispatch<number>) => {
   let client: IPFS;
+  const options = { wrapWithDirectory: true }
+  if (setProgress) {options["progress"] = (prog) => setProgress(prog)}
   if (ipfs && ipfs?.isOnline()) {
     client = ipfs;
   } else client = await create();
   return client.add(
     { content: file, path: file.name },
-    { wrapWithDirectory: true }
+    options
   );
 };
 
