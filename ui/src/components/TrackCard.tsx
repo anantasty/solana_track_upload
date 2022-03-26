@@ -1,7 +1,7 @@
 import { set } from "@project-serum/anchor/dist/cjs/utils/features";
 import { Key, useEffect, useState } from "react";
 
-import { Track } from "./contract/track_model";
+import { Track } from "../contract/track_model";
 import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -14,7 +14,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Icon from "@mui/material/Icon";
 import { IPFS } from "ipfs-core";
-import { get_infura_link } from "./contract/interact_track";
+import { get_infura_link } from "../contract/interact_track";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { ClassNames } from "@emotion/react";
 

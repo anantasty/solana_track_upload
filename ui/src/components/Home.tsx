@@ -11,12 +11,19 @@ import {
 } from "@solana/wallet-adapter-react-ui";
 import TracksView from "./TracksView";
 import TrackUpload from "./TrackUpload";
+import Navbar from "./Navbar";
 import { create, IPFS } from "ipfs-core";
+
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
+
 const PROGRAM_ID = "Bou2Yfi3uVrHi1FxHuHcgYFa5Q5M4bSoXK3NHpZy8Zd6";
-const Wallet: React.FC = () => {
+const Home: React.FC = () => {
   const { connection } = useConnection();
   const anchorWallet = useAnchorWallet();
   const [ipfsClient, setIpfsClient] = useState<IPFS>();
@@ -55,34 +62,50 @@ const Wallet: React.FC = () => {
     walletAddress = wallet.publicKey.toString();
   }
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
+  
+
   return (
-    <>
-      <div className="header-wrapper">
-        <span className="button-wrapper">
-          <WalletModalProvider>
-            <WalletMultiButton />
-          </WalletModalProvider>
-        </span>
-        {wallet.connected && <WalletDisconnectButton />}
-      </div>
-      <div className="track-upload">
-        <TrackUpload
-          ipfs={ipfsClient}
-          connection={connection}
-          wallet={wallet}
-          program={program}
-        />
-      </div>
-      <div>
-        <TracksView
-          connection={connection}
-          userKey={wallet.publicKey}
-          client={ipfsClient}
-          program={program}
-        ></TracksView>
-      </div>
-    </>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2} >
+        <Grid item xs={12} className="bg-[#0f172a]">
+          <Navbar />
+        </Grid>
+        <Grid item xs={12} className="bg-[#334155] p-5"> 
+          <div className="" >
+            <span className="button-wrapper">
+              <WalletModalProvider>
+                <WalletMultiButton />
+              </WalletModalProvider>
+            </span>
+            {wallet.connected && <WalletDisconnectButton />}
+          </div>
+        </Grid>
+        <Grid item xs={12} className="bg-[#334155] p-10">
+          <TrackUpload
+            ipfs={ipfsClient}
+            connection={connection}
+            wallet={wallet}
+            program={program}
+          />
+        </Grid>
+        <Grid item xs={12} className="bg-[#334155] p-10">
+          <TracksView
+            connection={connection}
+            userKey={wallet.publicKey}
+            client={ipfsClient}
+            program={program}
+          />
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
-export default Wallet;
+export default Home;
