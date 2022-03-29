@@ -31,6 +31,7 @@
     "crypto": "^1.0.1",
     "ipfs-core": "^0.14.1",
     "ipfs-http-client": "^56.0.1",
+    "patch-package": "^6.4.7",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.1",
     "react-dom": "^17.0.2",
@@ -44,8 +45,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "watch": "npx tailwindcss -i ./src/stylesheet/tailwind.css -o ./src/index.css --watch",
-      "test": "react-scripts test",
-      "postinstall": "patch-package",
+    "test": "react-scripts test",
+    "postinstall": "patch-package",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
