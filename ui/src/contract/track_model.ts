@@ -39,8 +39,6 @@ export class Track {
     for await (const item of client.files.ls(cid)) {
       links.push(this.get_infura_url(item.cid.toString()));
     }
-    console.log("links");
-    console.log(links);
     return links;
   };
 }
