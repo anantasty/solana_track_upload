@@ -5,7 +5,8 @@ import { TypeDef } from "@project-serum/anchor/dist/cjs/program/namespace/types"
 import { Track } from "./track_model";
 import idl  from './track_upload.json'
 
-import { create, IPFS } from "ipfs-core";
+import { create, IPFS, CID } from "ipfs-core";
+import { TrackUpload } from "./track_upload";
 
 const infura_browse = "https://ipfs.infura.io/ipfs";
 const infura_url = { url: "https://ipfs.infura.io:5001" };
@@ -33,15 +34,16 @@ const get_infura_url = (cid:String) => {
     return `${infura_browse}/${cid}`;
 };
 const get_infura_link= async (path: String, client: IPFS) =>  {
-    try{
-    const links = []
-    for await (const item of client.ls(String(path))){
-        links.push(get_infura_url(item.cid.toString()))
-    }
-    return links
-} catch (e) {
-    return []
-}
+  const result = []
+  try {
+    const dag = await client.dag.get(CID.parse(path as string))
+    result.push(get_infura_url(`${dag.value.cid}/${dag.value.file}`))
+  }
+  catch (e) {
+    result.push(e)
+  }
+  return result
+
 }
 export const track_to_model = async(tracks: ProgramAccount[], client: IPFS): Promise<Track[]> => {
     const track_models: Track[] = []
@@ -88,7 +90,7 @@ try{
   }
   const client = await create({repo: 'ok' + Math.random()})
     const myTracks = userKey? 
-        await track_to_model(await program.account.track.all([{memcmp:{offset:8, bytes: userKey.toBase58()}}]), client)
+        await track_to_model(await (await program.account.track.all([{memcmp:{offset:8, bytes: userKey.toBase58()}}])).slice(0,5), client)
         : null
 
     const allTracks = await track_to_model(await program.account.track.all(), client);

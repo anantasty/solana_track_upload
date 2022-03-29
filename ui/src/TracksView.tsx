@@ -11,7 +11,7 @@ import { IdlTypes, ProgramAccount } from "@project-serum/anchor";
 import { IdlTypeDef } from "@project-serum/anchor/dist/cjs/idl";
 import { TypeDef } from "@project-serum/anchor/dist/cjs/program/namespace/types";
 import { Track } from "./contract/track_model";
-import TrackCard from "./TrackCard";
+import TracksCard from "./TracksCard";
 
 export interface TrackViewProps {
     userKey: anchor.web3.PublicKey|null;
@@ -52,7 +52,7 @@ const TracksView = (props: TrackViewProps) => {
       }}
       >
           <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-            <TrackCard tracks={allTracks}></TrackCard>
+            <TracksCard tracks={allTracks}></TracksCard>
           </div>
       </div>        
     </main>
