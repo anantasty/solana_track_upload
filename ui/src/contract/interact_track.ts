@@ -1,19 +1,11 @@
 import * as anchor from "@project-serum/anchor";
-import { ProgramAccount, IdlTypes, AccountClient, Program } from "@project-serum/anchor";
-import { IdlTypeDef } from "@project-serum/anchor/dist/cjs/idl";
-import { TypeDef } from "@project-serum/anchor/dist/cjs/program/namespace/types";
+import { ProgramAccount, Program } from "@project-serum/anchor";
 import { Track } from "./track_model";
-import idl  from './track_upload.json'
 
 import { create, IPFS, CID } from "ipfs-core";
-import { TrackUpload } from "./track_upload";
+import { WalletContextState } from "@solana/wallet-adapter-react";
 
 const infura_browse = "https://ipfs.infura.io/ipfs";
-const infura_url = { url: "https://ipfs.infura.io:5001" };
-
-const projectId = '26kSkVGBv2Hpojs4LM2Jd97p799';
-const projectSecret = '0df8688fa57a9a29392280b3423eca11';
-
 const PROGRAM_ID = "Bou2Yfi3uVrHi1FxHuHcgYFa5Q5M4bSoXK3NHpZy8Zd6"
 
 
@@ -61,40 +53,79 @@ export const track_to_model = async(tracks: ProgramAccount[], client: IPFS): Pro
     return track_models
 }
 
+export const uploadToIpfs = async (file: File, ipfs: IPFS) => {
+  let client:IPFS;
+  if (ipfs && ipfs?.isOnline()) {client = ipfs} else (client = await create())
+  return client.add({content:file, path:file.name}, {wrapWithDirectory: true})
+}
+
+export const create_dag = async (
+  node:IPFS,
+  cid: String,
+  path: String,
+  track: String = "",
+  user: String = "",
+  artist: String = "",
+  title: String = "",
+  media_type: String = "image"
+) => {
+
+  const dag_cid = await node.dag.put(
+    {
+      cid: CID.parse(cid as string),
+      file: path,
+      user: user,
+      track: track,
+      artist: artist,
+      title: title,
+      media_type: media_type,
+      timestamp: new Date().getTime(),
+    },
+    { pin: true }
+  );
+  //node.stop()
+  return dag_cid.toString();
+};
+
+export const writeToChain = async (
+  program: Program,
+  cid: String,
+  track: anchor.web3.Keypair,
+  wallet: anchor.Wallet,
+  signer: WalletContextState,
+  connection: anchor.web3.Connection,
+  artist?: String,
+  title?:String,
+  ) =>  {
+  const tx = await program.rpc.initialize(cid, 
+    artist, title, {
+    accounts: {
+      signer: signer.publicKey,
+      systemProgram: anchor.web3.SystemProgram.programId,
+      track: track.publicKey,
+    },
+    signers: [track],
+  });
+  return tx
+}
 export const getTracks = async (
+  program: Program,
   connection: anchor.web3.Connection,    
   anchorWallet: anchor.Wallet,
   userKey?: anchor.web3.PublicKey| null,
+  client?: IPFS
 ): Promise<TrackState> => {
-  const provider = new anchor.Provider(connection, anchorWallet, {
-    preflightCommitment: "recent",
-  });
-
-  const chain_idl = await anchor.Program.fetchIdl(
-    PROGRAM_ID,
-    provider
-  );
-  let program: anchor.Program
-try{
-   program = new anchor.Program(chain_idl, PROGRAM_ID, provider);
-   console.log(program)
-} catch (e) {
-    console.error("Error creating idl")
-    console.error(e)
-     program = new anchor.Program(idl as anchor.Idl, PROGRAM_ID, provider);
-}
   const trackContract: TrackContract = {
     id: new anchor.web3.PublicKey(PROGRAM_ID),
     connection,
     program,
   }
-  const client = await create({repo: 'ok' + Math.random()})
     const myTracks = userKey? 
         await track_to_model(await (await program.account.track.all([{memcmp:{offset:8, bytes: userKey.toBase58()}}])).slice(0,5), client)
         : null
 
     const allTracks = await track_to_model(await program.account.track.all(), client);
-    client.stop()
+    //client.stop()
 
 
   const trackState: TrackState = {

@@ -18,7 +18,7 @@ import {
   getTorusWallet,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
-import MyWallet from "./MyWallet";
+import Wallet from "./Wallet";
 import TracksView from "./TracksView";
 
 function App() {
@@ -47,28 +47,7 @@ function App() {
       <WalletProvider wallets={wallets}>
         <div className="App">
           <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>
-              Edit <code>src/App.tsx</code> and save to reload.
-            </p>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </a>
-
-            <a
-              className="App-link"
-              href="https://solana-labs.github.io/solana-web3.js/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Solana Web3 docs
-            </a>
-            <MyWallet />
+            <Wallet />
           </header>
         </div>
       </WalletProvider>

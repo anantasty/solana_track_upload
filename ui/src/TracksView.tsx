@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Button } from "@material-ui/core";
 
 import * as anchor from "@project-serum/anchor";
-
-
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
+
 import { TrackContract, TrackState, getTracks } from "./contract/interact_track";
-import { IdlTypes, ProgramAccount } from "@project-serum/anchor";
-import { IdlTypeDef } from "@project-serum/anchor/dist/cjs/idl";
-import { TypeDef } from "@project-serum/anchor/dist/cjs/program/namespace/types";
 import { Track } from "./contract/track_model";
-import TracksCard from "./TracksCard";
+import TrackCard from "./TrackCard";
+import { IPFS } from "ipfs-core";
+import { Program } from "@project-serum/anchor";
 
 export interface TrackViewProps {
+    program: Program;
     userKey: anchor.web3.PublicKey|null;
     connection: anchor.web3.Connection;
+    client : IPFS
 }
 
 const TracksView = (props: TrackViewProps) => {
@@ -26,10 +24,10 @@ const TracksView = (props: TrackViewProps) => {
     const [trackContract, setTrackContract] = useState<TrackContract>()
     const refreshTrackState = () => {
         (async () => {
-            if (!wallet) return;
+            if (!wallet || !props.client) return;
             console.log("user key")
             console.log(props.userKey)
-            const trackState = await getTracks(props.connection, wallet as anchor.Wallet, props.userKey)
+            const trackState = await getTracks(props.program, props.connection, wallet as anchor.Wallet, props.userKey, props.client)
             if (trackState.myTracks){setMyTracks(trackState.myTracks)}
             setTrackState(trackState)
             setTrackContract(trackState.trackContract)
@@ -39,7 +37,7 @@ const TracksView = (props: TrackViewProps) => {
         })();
     }
 
-    useEffect(refreshTrackState, [wallet, props.userKey, props.connection]);
+    useEffect(refreshTrackState, [props.program, wallet, props.userKey, props.connection, props.client]);
 
     return (
     <main style={{position: 'relative'}}>
@@ -52,7 +50,7 @@ const TracksView = (props: TrackViewProps) => {
       }}
       >
           <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-            <TracksCard tracks={allTracks}></TracksCard>
+            <TrackCard tracks={allTracks}></TrackCard>
           </div>
       </div>        
     </main>
