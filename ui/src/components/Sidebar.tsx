@@ -60,7 +60,6 @@ export default function Sidebar() {
           </Link>
           <ListItem disablePadding className="flex flex-col">
             <Wallet />
-            {/* <WalletSub /> */}
           </ListItem>
         </List>
       </nav>
