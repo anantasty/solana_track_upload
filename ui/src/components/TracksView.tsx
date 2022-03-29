@@ -19,12 +19,10 @@ export interface TrackViewProps {
   userKey: anchor.web3.PublicKey | null;
   connection: anchor.web3.Connection;
   client: IPFS;
-  wallet: any;
 }
 
 const TracksView = (props: TrackViewProps) => {
-  // const wallet = useAnchorWallet();
-  const wallet = props.wallet;
+  const wallet = useAnchorWallet();
   const [myTracks, setMyTracks] = useState<Track[] | null>();
   const [allTracks, setAllTracks] = useState<Track[] | null>();
   const [trackState, setTrackState] = useState<TrackState>();
@@ -32,14 +30,15 @@ const TracksView = (props: TrackViewProps) => {
   const refreshTrackState = () => {
     (async () => {
       if (!wallet || !props.client) return;
+      console.log("user key");
+      console.log(props.userKey);
       const trackState = await getTracks(
         props.program,
         props.connection,
         wallet as anchor.Wallet,
         props.userKey,
         props.client
-        );
-        console.log('tracksView123=>', trackState );
+      );
       if (trackState.myTracks) {
         setMyTracks(trackState.myTracks);
       }

@@ -28,7 +28,9 @@ describe("track_upload", () => {
       },
       signers: [track],
     });
-    
+    console.log("Your transaction signature", tx);
+    console.log(`Track Key: ${track.publicKey}`);
+    console.log(`SIGNER: ${signer.publicKey}`);
   });
   it("Should match artist, track and cid", async () => {
     let trackState = await program.account.track.fetch(track.publicKey);

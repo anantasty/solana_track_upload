@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route } from 'react-router-dom';
 import {
   useAnchorWallet,
   useConnection,
@@ -11,25 +10,13 @@ import {
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
 import TracksView from "./TracksView";
-import Upload from "./Upload";
-import Headerbar from "./HeaderBar";
-import Sidebar from "./Sidebar";
-import Wallet from "./Wallet";
-
-import { Link } from "react-router-dom";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-
+import TrackUpload from "./TrackUpload";
+import Navbar from "./Navbar";
 import { create, IPFS } from "ipfs-core";
 
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 
 import * as anchor from "@project-serum/anchor";
@@ -43,6 +30,7 @@ const Home: React.FC = () => {
   const [program, setProgram] = useState<Program>();
   let walletAddress = "";
   const ipfsClientCreate = () => {
+    console.log("Connection to IPFS");
     (async () => {
       if (ipfsClient && ipfsClient?.isOnline()) {
         return;
@@ -50,6 +38,7 @@ const Home: React.FC = () => {
       const client = await create({ repo: "ok" + Math.random() });
       setIpfsClient(client);
     })();
+    console.log(`ipfs_status: ${ipfsClient}`);
   };
   const programCreate = () => {
     (async () => {
@@ -73,16 +62,22 @@ const Home: React.FC = () => {
     walletAddress = wallet.publicKey.toString();
   }
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
+  
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={0} >
-        <Grid item xs={12} className="bg-[#0f172a] p-1">
-          <Headerbar />
+      <Grid container spacing={2} >
+        <Grid item xs={12} className="bg-[#0f172a]">
+          <Navbar />
         </Grid>
-        <Grid item xs={2} className="bg-white h-screen">
-          <Sidebar />
-        </Grid>
-        {/* <Grid item xs={12} className="bg-[#334155] h-1000 p-5"> 
+        <Grid item xs={12} className="bg-[#334155] p-5"> 
           <div className="" >
             <span className="button-wrapper">
               <WalletModalProvider>
@@ -91,14 +86,9 @@ const Home: React.FC = () => {
             </span>
             {wallet.connected && <WalletDisconnectButton />}
           </div>
-        </Grid> */}
-        <Grid item xs={10} className="bg-[#334155] p-10">
-          {/* <Routes> */}
-          {/* <Route path="/upload" element={<Wallet />}/> */}
-            {/* <Route path="/upload" element={<TrackUpload ipfs={ipfsClient} connection={connection} wallet={wallet} program={program}/>}/> */}
-            {/* <Route path="/allimage" element={<TracksView userKey={wallet.publicKey} connection={connection} client={ipfsClient} program={program}/>}/> */}
-          {/* </Routes> */}
-          <Upload
+        </Grid>
+        <Grid item xs={12} className="bg-[#334155] p-10">
+          <TrackUpload
             ipfs={ipfsClient}
             connection={connection}
             wallet={wallet}
@@ -106,12 +96,12 @@ const Home: React.FC = () => {
           />
         </Grid>
         <Grid item xs={12} className="bg-[#334155] p-10">
-          {/* <TracksView
+          <TracksView
             connection={connection}
             userKey={wallet.publicKey}
             client={ipfsClient}
             program={program}
-          /> */}
+          />
         </Grid>
       </Grid>
     </Box>
