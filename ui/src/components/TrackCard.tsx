@@ -26,6 +26,7 @@ const TrackCard = (props: TrackProps) => {
   const [stateMap, setStateMap] = useState(new Map<String,String[]>());
   const [stateTrigger, setStateTrigger] = useState(Math.random());
   const populateLinks = () => {
+    console.log("adding links");
     (async () => {
       if (!props.tracks) {
         return;
@@ -38,6 +39,7 @@ const TrackCard = (props: TrackProps) => {
         setStateTrigger(Math.random());
       }
     })();
+    console.log("set state");
   };
   useEffect(populateLinks, [props.client, props.tracks]);
   const getMediaType = (path) => {

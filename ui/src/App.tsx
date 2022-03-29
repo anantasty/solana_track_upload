@@ -1,8 +1,7 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import { ConnectedRouter } from "connected-react-router";
-import { Provider } from "react-redux";
 import "./App.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
+
 import {
   ConnectionProvider,
   WalletProvider,
@@ -17,28 +16,11 @@ import {
   getSolletWallet,
   getTorusWallet,
 } from "@solana/wallet-adapter-wallets";
-
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-
 import { clusterApiUrl } from "@solana/web3.js";
 import Home from "./components/Home";
-import Headerbar from "./components/HeaderBar";
-import Sidebar from "./components/Sidebar";
 import TracksView from "./components/TracksView";
-import TrackUpload from "./components/TrackUpload";
-import AllTrack from "./components/AllTrack";
-import MyTrack from "./components/MyTrack";
-import Wallet from "./components/Wallet";
-import { ApplicationState } from "./store";
-import { History } from "history";
 
-interface ComponentProps {
-  store: ApplicationState | any;
-  history: History;
-}
-
-const App: React.FC = () => {
+function App() {
   // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
   const network = WalletAdapterNetwork.Devnet;
 
@@ -62,26 +44,12 @@ const App: React.FC = () => {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets}>
-        <Box sx={{ flexGrow: 0 }}>
-          <Grid container spacing={0}>
-            <Grid item xs={12} className="bg-[#0f172a] p-1">
-              <Headerbar />
-            </Grid>
-            <Grid item xs={2} className="bg-white h-screen">
-              <Sidebar />
-            </Grid>
-            <Grid item xs={10} className="bg-[#334155] p-10">
-              <Routes>
-                <Route path="/alltrack" element={<AllTrack />} />
-                <Route path="/mytrack" element={<MyTrack />} />
-                <Route path="/trackupload" element={<TrackUpload />} />
-              </Routes>
-            </Grid>
-          </Grid>
-        </Box>
+        <div className="">
+            <Home />
+        </div>
       </WalletProvider>
     </ConnectionProvider>
   );
-};
+}
 
 export default App;
