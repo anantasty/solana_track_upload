@@ -55,10 +55,10 @@ const UploadImage = (props: UploadProps) => {
     setMessages("attempting upload");
     setProgress(10);
     try {
-      const result = await uploadToIpfs(currentFile, props.ipfs, setProgress);
+      const result = await uploadToIpfs(currentFile, props.ipfs);
       setCid(result.cid.toString());
-      setProgress(100)
       setMessages(result.cid.toString());
+      setProgress(100);
     } catch (e) {
       setMessages(`Error: ${e}`);
       setProgress(0);

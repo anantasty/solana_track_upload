@@ -7,7 +7,6 @@ import {
   TrackContract,
   TrackState,
   getTracks,
-  get_infura_link,
 } from "../contract/interact_track";
 import { Track } from "../contract/track_model";
 import TrackCard from "./TrackCard";
@@ -19,10 +18,12 @@ export interface TrackViewProps {
   userKey: anchor.web3.PublicKey | null;
   connection: anchor.web3.Connection;
   client: IPFS;
+  wallet: any;
 }
 
 const TracksView = (props: TrackViewProps) => {
-  const wallet = useAnchorWallet();
+  // const wallet = useAnchorWallet();
+  const wallet = props.wallet;
   const [myTracks, setMyTracks] = useState<Track[] | null>();
   const [allTracks, setAllTracks] = useState<Track[] | null>();
   const [trackState, setTrackState] = useState<TrackState>();
@@ -30,21 +31,21 @@ const TracksView = (props: TrackViewProps) => {
   const refreshTrackState = () => {
     (async () => {
       if (!wallet || !props.client) return;
-      console.log("user key");
-      console.log(props.userKey);
       const trackState = await getTracks(
         props.program,
         props.connection,
         wallet as anchor.Wallet,
         props.userKey,
         props.client
-      );
+        );
+        console.log('tracksView123=>', trackState );
       if (trackState.myTracks) {
         setMyTracks(trackState.myTracks);
       }
       setTrackState(trackState);
       setTrackContract(trackState.trackContract);
       setAllTracks(trackState.allTracks);
+      /*             const tracks = await allTracks.map(async t=> {t.link=await t.get_infura_link(); return t}) */
     })();
   };
 
@@ -56,28 +57,8 @@ const TracksView = (props: TrackViewProps) => {
     props.client,
   ]);
   props.program?.addEventListener("TrackEvent", (event, slot) => {
-    const new_track = new Track(
-      event.cid,
-       event.artist, 
-       event.trackTItle,
-       event.track);
-       console.log("tracks length "+ allTracks?.length);
-       console.log(allTracks);
-       console.log("THIS");
-       console.log(this);
-       (async ()=> new_track.extra = await get_infura_link(event.cid, props.client))();
-       console.log(`event: ${event}, slot: ${slot}`);
-       console.log(event);
-    if (wallet.publicKey.toString() === event.signer.toString()) {
-      if (myTracks){myTracks.push(new_track)
-      setMyTracks(myTracks)}
-    }
-    if (allTracks){
-    allTracks.push(new_track)
-    setAllTracks(allTracks)}
-    console.log("tracks length2 "+ allTracks?.length);
-    console.log(allTracks)
-
+    console.log(`event: ${event}, slot: ${slot}`);
+    console.log(event);
   });
   return (
     <main style={{ position: "relative" }}>

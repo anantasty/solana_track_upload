@@ -26,7 +26,6 @@ const TrackCard = (props: TrackProps) => {
   const [stateMap, setStateMap] = useState(new Map<String,String[]>());
   const [stateTrigger, setStateTrigger] = useState(Math.random());
   const populateLinks = () => {
-    console.log("adding links");
     (async () => {
       if (!props.tracks) {
         return;
@@ -39,7 +38,6 @@ const TrackCard = (props: TrackProps) => {
         setStateTrigger(Math.random());
       }
     })();
-    console.log("set state");
   };
   useEffect(populateLinks, [props.client, props.tracks]);
   const getMediaType = (path) => {
@@ -67,8 +65,8 @@ const TrackCard = (props: TrackProps) => {
                       <CardMedia
                         component={getMediaType(link)}
                         alt="green iguana"
-                        height="200"
-                        title={track.title as string}
+                        height="140"
+                        key={Date.now()}
                         src={link}
                         autoPlay
                         controls
@@ -96,7 +94,7 @@ const TrackCard = (props: TrackProps) => {
                       <Typography
                         variant="body2"
                         color="text.secondary"
-                        style={{ padding: "5px", fontWeight: "italics" }}
+                        style={{ padding: "5px", fontWeight: "bold" }}
                       >
                         {track.cid}
                       </Typography>
@@ -112,4 +110,3 @@ const TrackCard = (props: TrackProps) => {
 };
 
 export default TrackCard;
-
