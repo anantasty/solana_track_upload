@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("Bou2Yfi3uVrHi1FxHuHcgYFa5Q5M4bSoXK3NHpZy8Zd6");
+declare_id!("6yT4AFpityTwxz7AdVrSJTckGyPyrXL8MKuutmBbDTnj");
 
 #[program]
 pub mod track_upload {
