@@ -21,6 +21,12 @@
     "jsx": "react-jsx"
   },
   "include": [
+<<<<<<< HEAD
     "src/**/*.ts"
+=======
+    "src",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+>>>>>>> WebGenius912-WebGenius912
   ]
 }
