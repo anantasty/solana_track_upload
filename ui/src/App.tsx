@@ -18,12 +18,12 @@ import {
   getTorusWallet,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
-import Wallet from "./Wallet";
+import MyWallet from "./MyWallet";
 import TracksView from "./TracksView";
 
 function App() {
   // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
-  const network = WalletAdapterNetwork.Mainnet;
+  const network = WalletAdapterNetwork.Devnet;
 
   // You can also provide a custom RPC endpoint
   const endpoint = React.useMemo(() => clusterApiUrl(network), [network]);
@@ -47,7 +47,28 @@ function App() {
       <WalletProvider wallets={wallets}>
         <div className="App">
           <header className="App-header">
-            <Wallet />
+            <img src={logo} className="App-logo" alt="logo" />
+            <p>
+              Edit <code>src/App.tsx</code> and save to reload.
+            </p>
+            <a
+              className="App-link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn React
+            </a>
+
+            <a
+              className="App-link"
+              href="https://solana-labs.github.io/solana-web3.js/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Solana Web3 docs
+            </a>
+            <MyWallet />
           </header>
         </div>
       </WalletProvider>

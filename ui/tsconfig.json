@@ -21,6 +21,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
-, "../../../track-contract/TracksUpload.tsx"  ]
+    "src",
+    "src/**/*.ts",
+    "src/**/*.tsx"
 }
