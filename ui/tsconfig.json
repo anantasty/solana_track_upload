@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2021",
+    "target": "ES2022",
     "lib": [
       "dom",
       "dom.iterable",
@@ -21,6 +21,6 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
-, "../../../track-contract/TracksUpload.tsx"  ]
+    "src/**/*.ts"
+  ]
 }
