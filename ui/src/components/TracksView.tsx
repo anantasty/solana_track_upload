@@ -7,8 +7,8 @@ import {
   TrackContract,
   TrackState,
   getTracks,
-} from "./contract/interact_track";
-import { Track } from "./contract/track_model";
+} from "../contract/interact_track";
+import { Track } from "../contract/track_model";
 import TrackCard from "./TrackCard";
 import { IPFS } from "ipfs-core";
 import { Program } from "@project-serum/anchor";
