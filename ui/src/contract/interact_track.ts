@@ -119,6 +119,7 @@ export const getTracks = async (
   userKey?: anchor.web3.PublicKey | null,
   client?: IPFS
 ): Promise<TrackState> => {
+  console.log('interact_tack=>', connection, program, userKey);
   const trackContract: TrackContract = {
     id: new anchor.web3.PublicKey(PROGRAM_ID),
     connection,
@@ -146,6 +147,5 @@ export const getTracks = async (
     myTracks,
     allTracks,
   };
-  console.log(trackState);
   return trackState;
 };
