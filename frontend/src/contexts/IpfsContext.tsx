@@ -1,11 +1,9 @@
-
+import { GossipSub } from 'libp2p-gossipsub'
    
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { IPFS} from "ipfs-core"
-import { create } from "ipfs-core";
+import { IPFS, create } from "ipfs-core"
 import  { FC } from 'react';
-
 
 export interface IPFSConnectionProviderProps {
     ipfsClient: IPFS
@@ -14,22 +12,31 @@ export interface IPFSConnectionProviderProps {
 
 export const IPFSConnectionProvider: FC<{}> = (props) => {
     const { children } = props
-    const [ipfsClient, setClient] = useState<IPFS>()
+    const [id, setId] = useState(null);
+    const [ipfs, setIpfs] = useState(null);
+    const [version, setVersion] = useState(null);
+    const [isOnline, setIsOnline] = useState(false);
+  
+    useEffect(() => {
+      const init = async () => {
+        if (ipfs) return
+  
+        const node = await create();
+  
+        const nodeId = await node.id();
+        const nodeVersion = await node.version();
+        const nodeIsOnline = node.isOnline();
+  
+        setIpfs(node);
+        setId(nodeId.id);
+        setVersion(nodeVersion.version);
+        setIsOnline(nodeIsOnline);
+      }
+  
+      init()
+    }, [ipfs]);
 
-useEffect(() => {
-  let active = true
-  load()
-  return () => { active = false }
-
-  async function load() {
-    setClient(undefined) // this is optional
-    // const res = await create();
-    if (!active) { return }
-    //setClient(res)
-  }
-}, [])
-
-    return <IPFSConnectionContext.Provider value={{ ipfsClient: ipfsClient }}>{children}</IPFSConnectionContext.Provider>;
+    return <IPFSConnectionContext.Provider value={{ ipfsClient: ipfs }}>{children}</IPFSConnectionContext.Provider>;
 };
 export interface IPFSConnectionContextState {
     ipfsClient: IPFS;

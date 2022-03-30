@@ -27,6 +27,7 @@ import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapte
 import styles from '../styles/Home.module.css';
 import Splash from '@/content/Overview/Splash';
 import { IPFSConnectionProvider } from '@/contexts/IpfsContext';
+import IpfsComponent from '@/components/IPFS';
 
 // Use require instead of import since order matters
 require('@solana/wallet-adapter-react-ui/styles.css');
