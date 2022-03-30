@@ -1,16 +1,17 @@
-import { combineReducers } from "redux";
+import { combineReducers, createStore } from "redux";
 import { connectRouter, RouterState } from "connected-react-router";
 import { History } from "history";
-import { AuthState } from "./auth/types";
-import { authReducer } from "./auth/reducer";
+import { AppState } from "./auth/types";
+import { appReducer } from "./auth/reducer";
 
 export interface ApplicationState {
-  auth: AuthState;
+  auth: AppState;
   router: RouterState | any;
 }
 
 export const createRootReducer = (history: History) =>
   combineReducers({
-    auth: authReducer,
+    auth: appReducer,
     router: connectRouter(history),
   });
+  

@@ -1,7 +1,7 @@
 import { Store, createStore, applyMiddleware } from "redux";
 import { routerMiddleware } from "connected-react-router";
 import { History } from "history";
-import thunk from "redux-thunk";
+import thunkMiddleware from "redux-thunk";
 import { ApplicationState } from "./store";
 import { createRootReducer } from "./store";
 
@@ -12,7 +12,7 @@ export default function configureStore(
     const store = createStore(
         createRootReducer(history),
         initialState,
-        applyMiddleware(routerMiddleware(history), thunk)
+        applyMiddleware(routerMiddleware(history), thunkMiddleware)
     );
     return store;
 };

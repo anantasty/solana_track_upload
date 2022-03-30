@@ -1,19 +1,33 @@
 import { Reducer } from "redux";
 
-import { AuthState, AuthActionTypes } from "./types";
+import { AppState, ActionTypes } from "./types";
 
-const initialState: AuthState = {
+const initialState: AppState = {
   //walletAddress: localStorage.getItem("walletAddress"),
   walletInfo: {},
+  myTracks: [],
+  allTracks: []
 };
 
-const reducer: Reducer<AuthState> = (state = initialState, action) => {
+export const appReducer: Reducer<AppState> = (state = initialState, action) => {
   switch (action.type) {
-    case AuthActionTypes.SET_WALLET_ADDRESS: {
+    case ActionTypes.SET_WALLET_ADDRESS: {
       return {
         ...state,
         walletInfo: action.payload,
       };
+    }
+    case ActionTypes.SET_ALL_TRACKS: {
+      return {
+        ...state,
+        allTracks: action.payload
+      }
+    }
+    case ActionTypes.SET_MY_TRACKS: {
+      return {
+        ...state,
+        myTracks: action.payload
+      }
     }
     default: {
       return { ...state };
@@ -21,4 +35,3 @@ const reducer: Reducer<AuthState> = (state = initialState, action) => {
   }
 };
 
-export { reducer as authReducer };

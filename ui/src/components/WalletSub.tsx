@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useAnchorWallet,
   useConnection,
@@ -13,31 +13,30 @@ import { create, IPFS } from "ipfs-core";
 
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
-import { useDispatch } from "react-redux";
+import { useDispatch, useStore } from "react-redux";
 import { setWalletAddress } from "../store/auth/action";
 
-const PROGRAM_ID = "Bou2Yfi3uVrHi1FxHuHcgYFa5Q5M4bSoXK3NHpZy8Zd6";
 const WalletSub: React.FC = () => {
   const { connection } = useConnection();
   const anchorWallet = useAnchorWallet();
   
   const wallet = useWallet();
-  let walletAddress = "";
+  let walletAddress = undefined;
   if (wallet.connected && wallet.publicKey) {
-      walletAddress = wallet.publicKey.toString();
+      walletAddress = wallet.publicKey;
   }
-  const walletInfo = {
-    walletAddress,
-    anchorWallet,
-    connection,
-  }
-
+  const walletInfo = useMemo(() => ({
+    wallet: wallet,
+    walletAddress: wallet.publicKey,
+    connection: connection,
+  }),[wallet, connection]);
   const dispatch = useDispatch();
+  
   useEffect(() => {
     if(anchorWallet && walletAddress) {
       dispatch(setWalletAddress(walletInfo));
     }
-  }, [anchorWallet, walletAddress])
+  }, [walletInfo, anchorWallet, walletAddress, dispatch])
     // const [ipfsClient, setIpfsClient] = useState<IPFS>();
     // const [program, setProgram] = useState<Program>();
     // const ipfsClientCreate = () => {
