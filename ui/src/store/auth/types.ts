@@ -1,5 +1,7 @@
+import { AnchorWallet } from "@solana/wallet-adapter-react";
+
 export interface AuthState {
-  walletInfo?: any;
+  walletInfo?: AnchorWallet;
 }
 
 export enum AuthActionTypes {

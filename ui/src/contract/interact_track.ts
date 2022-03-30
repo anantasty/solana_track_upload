@@ -124,10 +124,10 @@ export const getTracks = async (
     connection,
     program,
   };
-  const myTracks = userKey
+  const myTracks = program && program.account && userKey
     ? await track_to_model(
         await (
-          await program.account.track.all([
+          await program?.account?.track.all([
             { memcmp: { offset: 8, bytes: userKey.toBase58() } },
           ])
         ).slice(0, 5),

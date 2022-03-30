@@ -17,7 +17,7 @@ import { Program } from "@project-serum/anchor";
 import { useSelector } from "react-redux";
 import { ApplicationState } from '../store';
 
-const PROGRAM_ID = "Bou2Yfi3uVrHi1FxHuHcgYFa5Q5M4bSoXK3NHpZy8Zd6";
+const PROGRAM_ID = "6yT4AFpityTwxz7AdVrSJTckGyPyrXL8MKuutmBbDTnj";
 
 const AllTrack: React.FC = () => {
     const walletInfos = useSelector((state: ApplicationState) => state.auth.walletInfo);

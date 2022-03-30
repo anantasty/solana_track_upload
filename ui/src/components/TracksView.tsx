@@ -35,7 +35,7 @@ const TracksView = (props: TrackViewProps) => {
         props.program,
         props.connection,
         wallet as anchor.Wallet,
-        props.userKey,
+        wallet.publicKey,
         props.client
         );
         console.log('tracksView123=>', trackState );
