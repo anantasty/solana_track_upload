@@ -1,9 +1,13 @@
-import { GossipSub } from 'libp2p-gossipsub'
-   
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { IPFS, create } from "ipfs-core"
+import { create as httpCreate } from "ipfs-http-client";
 import  { FC } from 'react';
+
+const projectId = '26kSkVGBv2Hpojs4LM2Jd97p799';
+const projectSecret = '0df8688fa57a9a29392280b3423eca11';
+const auth =
+    'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
 
 export interface IPFSConnectionProviderProps {
     ipfsClient: IPFS
@@ -14,21 +18,36 @@ export const IPFSConnectionProvider: FC<{}> = (props) => {
     const { children } = props
     const [id, setId] = useState(null);
     const [ipfs, setIpfs] = useState(null);
+    const [nodeType, setNodeType] = useState("")
     const [version, setVersion] = useState(null);
     const [isOnline, setIsOnline] = useState(false);
   
     useEffect(() => {
       const init = async () => {
         if (ipfs) return
-        const ipfsNode = await create({repo: `ok ${Math.random()}`});
-        const nodeId = await ipfsNode.id();
+        let ipfsNode;
+        try{
+        ipfsNode = await create({repo: `ok ${Math.random()}`});
+        const nodeId = await ipfsNode.id();        
+        setId(nodeId.id);        
+        setNodeType("Core")
+        setIsOnline(ipfsNode.isOnline)        
+        } catch (e) {
+            ipfsNode = await httpCreate({
+                host: 'ipfs.infura.io',
+                port: 5001,
+                protocol: 'https',
+                headers: {
+                    authorization: auth,
+                },
+            });
+            setNodeType("http")
+        }
+
         const nodeVersion = await ipfsNode.version();
-        const nodeIsOnline = ipfsNode.isOnline();
-  
+        setVersion(nodeVersion)
         setIpfs(ipfsNode);
-        setId(nodeId.id);
         setVersion(nodeVersion.version);
-        setIsOnline(nodeIsOnline);
       }
   
       init()
