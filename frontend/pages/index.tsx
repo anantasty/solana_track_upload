@@ -1,5 +1,5 @@
 import { Box, Card, Container, Button, styled } from '@mui/material';
-import type { ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import Link from 'src/components/Link';
@@ -11,6 +11,23 @@ import Highlights from 'src/content/Overview/Highlights';
 import LanguageSwitcher from 'src/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher';
 import Footer from 'src/components/Footer';
 
+///
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import {
+  getLedgerWallet,
+  getPhantomWallet,
+  getSlopeWallet,
+  getSolflareWallet,
+  getSolletExtensionWallet,
+  getSolletWallet,
+  getTorusWallet,
+} from "@solana/wallet-adapter-wallets";
+import { clusterApiUrl } from "@solana/web3.js";
+///
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
   width: 100%;
@@ -32,8 +49,22 @@ const OverviewWrapper = styled(Box)(
 
 function Overview() {
   const { t }: { t: any } = useTranslation();
-
+  const network = WalletAdapterNetwork.Devnet;  
+  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const wallets = useMemo(
+    () => [
+      getPhantomWallet(),
+      getSlopeWallet(),
+      getSolflareWallet(),
+      getLedgerWallet(),
+      getSolletWallet({ network }),
+      getSolletExtensionWallet({ network }),
+    ],
+    [network]
+  );
   return (
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets}>
     <OverviewWrapper>
       <Head>
         <title>Tokyo NextJS Typescript Admin Dashboard</title>
@@ -68,6 +99,8 @@ function Overview() {
       <Highlights />
       <Footer />
     </OverviewWrapper>
+    </WalletProvider>
+    </ConnectionProvider>
   );
 }
 
