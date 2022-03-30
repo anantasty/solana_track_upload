@@ -26,6 +26,7 @@ import { clusterApiUrl } from '@solana/web3.js';
 import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import styles from '../styles/Home.module.css';
 import Splash from '@/content/Overview/Splash';
+import { IPFSConnectionProvider } from '@/contexts/IpfsContext';
 
 // Use require instead of import since order matters
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -74,6 +75,7 @@ function Overview() {
   );
   return (
     <ConnectionProvider endpoint={endpoint}>
+      <IPFSConnectionProvider>
       <WalletProvider wallets={wallets} autoConnect>
       <WalletModalProvider>        
     <OverviewWrapper>
@@ -109,6 +111,7 @@ function Overview() {
     </OverviewWrapper>
     </WalletModalProvider>
     </WalletProvider>
+    </IPFSConnectionProvider>
     </ConnectionProvider>
   );
 }
