@@ -4,7 +4,6 @@ const calendarTranspile = require('next-transpile-modules')([
   '@fullcalendar/daygrid',
   '@fullcalendar/list',
   '@fullcalendar/timegrid',
-  'ipfs-code'
 ]);
 
 const withImages = require('next-images');
