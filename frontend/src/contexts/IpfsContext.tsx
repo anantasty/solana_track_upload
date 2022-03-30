@@ -20,17 +20,24 @@ export const IPFSConnectionProvider: FC<{}> = (props) => {
     useEffect(() => {
       const init = async () => {
         if (ipfs) return
+        try {
+        const ipfsNode = await create();
+        const nodeId = await ipfsNode.id();
+        const nodeVersion = await ipfsNode.version();
+        const nodeIsOnline = ipfsNode.isOnline();
   
-        const node = await create();
-  
-        const nodeId = await node.id();
-        const nodeVersion = await node.version();
-        const nodeIsOnline = node.isOnline();
-  
-        setIpfs(node);
+        setIpfs(ipfsNode);
         setId(nodeId.id);
         setVersion(nodeVersion.version);
-        setIsOnline(nodeIsOnline);
+        setIsOnline(nodeIsOnline);        
+        } catch (e) {
+            if (e instanceof TypeError) {
+                console.log(`TypeError ${e}`)
+              } else {
+                  console.log(`handling error ${e}`)
+              }
+        }
+
       }
   
       init()
