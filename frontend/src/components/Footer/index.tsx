@@ -20,7 +20,7 @@ function Footer() {
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2021 - Tokyo Next.js Typescript Admin Dashboard
+            Hosted by Us
           </Typography>
         </Box>
         <Typography
@@ -29,13 +29,13 @@ function Footer() {
           }}
           variant="subtitle1"
         >
-          Crafted by{' '}
+          Ran by{' '}
           <Link
             href="https://bloomui.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            BloomUI.com
+            The Community.
           </Link>
         </Typography>
       </Box>
