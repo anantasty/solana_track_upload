@@ -3,7 +3,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { IPFS, create } from "ipfs-core"
 import { create as httpCreate } from "ipfs-http-client";
 import  { FC } from 'react';
-
+import urlExist from "url-exist";
+//TODO - move secrets out of here
 const projectId = '26kSkVGBv2Hpojs4LM2Jd97p799';
 const projectSecret = '0df8688fa57a9a29392280b3423eca11';
 const auth =
@@ -13,6 +14,18 @@ export interface IPFSConnectionProviderProps {
     ipfsClient: IPFS
     type: "native" | "http";
 }
+
+const infuraCreateParams = {
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+    headers: {
+        authorization: auth,
+    },
+}
+
+const localCreateParams = {host: "localhost", port: 5001}
+const localUrl = "http://localhost:5001"
 
 export const IPFSConnectionProvider: FC<{}> = (props) => {
     const { children } = props
@@ -33,14 +46,8 @@ export const IPFSConnectionProvider: FC<{}> = (props) => {
         setNodeType("Core")
         setIsOnline(ipfsNode.isOnline)        
         } catch (e) {
-            ipfsNode = await httpCreate({
-                host: 'ipfs.infura.io',
-                port: 5001,
-                protocol: 'https',
-                headers: {
-                    authorization: auth,
-                },
-            });
+            const params = await urlExist(localUrl) ? localCreateParams: infuraCreateParams
+            ipfsNode = await httpCreate(params);
             setNodeType("http")
         }
 
