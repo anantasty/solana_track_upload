@@ -6,8 +6,6 @@ import Link from 'src/components/Link';
 import Head from 'next/head';
 import { useTranslation } from 'react-i18next';
 import Logo from 'src/components/LogoSign';
-import Hero from 'src/content/Overview/Hero';
-import Highlights from 'src/content/Overview/Highlights';
 import LanguageSwitcher from 'src/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher';
 import Footer from 'src/components/Footer';
 
@@ -25,12 +23,12 @@ import {
     TorusWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
-import { AppProps } from 'next/app';
+import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import styles from '../styles/Home.module.css';
 import Splash from '@/content/Overview/Splash';
 
 // Use require instead of import since order matters
 require('@solana/wallet-adapter-react-ui/styles.css');
-/* require('../styles/globals.css'); */
 ///
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -76,10 +74,11 @@ function Overview() {
   );
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets}>
+      <WalletProvider wallets={wallets} autoConnect>
+      <WalletModalProvider>        
     <OverviewWrapper>
       <Head>
-        <title>Tokyo NextJS Typescript Admin Dashboard</title>
+        <title>P2P Image Share</title>
       </Head>
       <HeaderWrapper>
         <Container maxWidth="lg">
@@ -94,22 +93,21 @@ function Overview() {
               <Box />
               <Box>
                 <LanguageSwitcher />
-                <Button
-                  component={Link}
-                  href="/dashboards/reports"
-                  variant="contained"
-                  sx={{ ml: 2 }}
-                >
-                  {t('Live Preview')}
-                </Button>
+                </Box>
+                <Box>
+                    <WalletMultiButton />
+                    </Box>
+                    <Box>
+                    <WalletDisconnectButton />
+                    </Box>
               </Box>
             </Box>
-          </Box>
         </Container>
       </HeaderWrapper>
       <Splash />
       <Footer />
     </OverviewWrapper>
+    </WalletModalProvider>
     </WalletProvider>
     </ConnectionProvider>
   );
