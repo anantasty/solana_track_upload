@@ -12,21 +12,25 @@ import LanguageSwitcher from 'src/layouts/BoxedSidebarLayout/Header/Buttons/Lang
 import Footer from 'src/components/Footer';
 
 ///
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import {
-  ConnectionProvider,
-  WalletProvider,
-} from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import {
-  getLedgerWallet,
-  getPhantomWallet,
-  getSlopeWallet,
-  getSolflareWallet,
-  getSolletExtensionWallet,
-  getSolletWallet,
-  getTorusWallet,
-} from "@solana/wallet-adapter-wallets";
-import { clusterApiUrl } from "@solana/web3.js";
+    LedgerWalletAdapter,
+    PhantomWalletAdapter,
+    SlopeWalletAdapter,
+    SolflareWalletAdapter,
+    SolletExtensionWalletAdapter,
+    SolletWalletAdapter,
+    TorusWalletAdapter,
+} from '@solana/wallet-adapter-wallets';
+import { clusterApiUrl } from '@solana/web3.js';
+import { AppProps } from 'next/app';
+import Splash from '@/content/Overview/Splash';
+
+// Use require instead of import since order matters
+require('@solana/wallet-adapter-react-ui/styles.css');
+/* require('../styles/globals.css'); */
 ///
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -49,18 +53,26 @@ const OverviewWrapper = styled(Box)(
 
 function Overview() {
   const { t }: { t: any } = useTranslation();
-  const network = WalletAdapterNetwork.Devnet;  
+
+  const network = WalletAdapterNetwork.Devnet;
+
+  // You can also provide a custom RPC endpoint
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+
+  // @solana/wallet-adapter-wallets includes all the adapters but supports tree shaking and lazy loading --
+  // Only the wallets you configure here will be compiled into your application, and only the dependencies
+  // of wallets that your users connect to will be loaded
   const wallets = useMemo(
-    () => [
-      getPhantomWallet(),
-      getSlopeWallet(),
-      getSolflareWallet(),
-      getLedgerWallet(),
-      getSolletWallet({ network }),
-      getSolletExtensionWallet({ network }),
-    ],
-    [network]
+      () => [
+          new PhantomWalletAdapter(),
+          new SlopeWalletAdapter(),
+          new SolflareWalletAdapter({ network }),
+          new TorusWalletAdapter(),
+          new LedgerWalletAdapter(),
+          new SolletWalletAdapter({ network }),
+          new SolletExtensionWalletAdapter({ network }),
+      ],
+      [network]
   );
   return (
     <ConnectionProvider endpoint={endpoint}>
@@ -95,8 +107,7 @@ function Overview() {
           </Box>
         </Container>
       </HeaderWrapper>
-      <Hero />
-      <Highlights />
+      <Splash />
       <Footer />
     </OverviewWrapper>
     </WalletProvider>
