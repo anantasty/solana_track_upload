@@ -2,6 +2,7 @@ import { Box, Card, Container, Button, styled } from '@mui/material';
 import { ReactElement, useMemo } from 'react';
 import BaseLayout from 'src/layouts/BaseLayout';
 
+import * as anchor from "@project-serum/anchor";
 import Link from 'src/components/Link';
 import Head from 'next/head';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +12,7 @@ import Footer from 'src/components/Footer';
 
 ///
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { ConnectionProvider, useAnchorWallet, useConnection, useWallet, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import {
     LedgerWalletAdapter,
@@ -24,14 +25,17 @@ import {
 } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
 import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import styles from '../styles/Home.module.css';
 import Splash from '@/content/Overview/Splash';
 import { IPFSConnectionProvider } from '@/contexts/IpfsContext';
-import IpfsComponent from '@/components/IPFS';
+import { ProgramConnectionProvider } from '@/contexts/ProgramProvider';
+import { getProvider } from '@project-serum/anchor';
+import { AnchorTwoTone } from '@mui/icons-material';
 
 // Use require instead of import since order matters
 require('@solana/wallet-adapter-react-ui/styles.css');
 ///
+const PROGRAM_ID = "6yT4AFpityTwxz7AdVrSJTckGyPyrXL8MKuutmBbDTnj";
+
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
   width: 100%;
@@ -78,7 +82,8 @@ function Overview() {
     <ConnectionProvider endpoint={endpoint}>
       <IPFSConnectionProvider>
       <WalletProvider wallets={wallets} autoConnect>
-      <WalletModalProvider>        
+      <WalletModalProvider>      
+      <ProgramConnectionProvider connection={useConnection().connection} wallet={useAnchorWallet()} programId={PROGRAM_ID} >
     <OverviewWrapper>
       <Head>
         <title>P2P Image Share</title>
@@ -110,6 +115,7 @@ function Overview() {
       <Splash />
       <Footer />
     </OverviewWrapper>
+    </ProgramConnectionProvider>  
     </WalletModalProvider>
     </WalletProvider>
     </IPFSConnectionProvider>

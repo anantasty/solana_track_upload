@@ -8,7 +8,7 @@ const calendarTranspile = require('next-transpile-modules')([
 
 const withImages = require('next-images');
 
-module.exports = withImages(
+const exp = withImages(
   calendarTranspile({
     i18n: {
       defaultLocale: 'en',
@@ -16,3 +16,13 @@ module.exports = withImages(
     }
   })
 );
+
+module.exports = {
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback.fs = false;
+    }
+    return config;
+  },
+  ...exp
+}

@@ -60,10 +60,12 @@ export const IPFSConnectionProvider: FC<{}> = (props) => {
       init()
     }, [ipfs]);
 
-    return <IPFSConnectionContext.Provider value={{ ipfsClient: ipfs }}>{children}</IPFSConnectionContext.Provider>;
+    return <IPFSConnectionContext.Provider value={{ ipfsClient: ipfs,  id:id, type:nodeType  }}>{children}</IPFSConnectionContext.Provider>;
 };
 export interface IPFSConnectionContextState {
     ipfsClient: IPFS;
+    id: String,
+    type: String,
 }
 
 export const IPFSConnectionContext = createContext<IPFSConnectionContextState>({} as IPFSConnectionContextState);
