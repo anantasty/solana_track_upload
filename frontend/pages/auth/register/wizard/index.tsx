@@ -329,11 +329,7 @@ function RegisterWizard() {
                       )}
                     </Typography>
 
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      href="/"
-                    >
+                    <Button fullWidth variant="contained" href="/">
                       Continue to sign in
                     </Button>
                   </Container>

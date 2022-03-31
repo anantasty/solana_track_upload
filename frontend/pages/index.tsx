@@ -12,7 +12,7 @@ import Footer from 'src/components/Footer';
 
 ///
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { ConnectionProvider, useAnchorWallet, useConnection, useWallet, WalletProvider } from '@solana/wallet-adapter-react';
+import { ConnectionProvider, useAnchorWallet, useConnection, useWallet, WalletContext, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import {
     LedgerWalletAdapter,
@@ -27,9 +27,10 @@ import { clusterApiUrl } from '@solana/web3.js';
 import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import Splash from '@/content/Overview/Splash';
 import { IPFSConnectionProvider } from '@/contexts/IpfsContext';
-import { ProgramConnectionProvider } from '@/contexts/ProgramProvider';
+import { ProgramConnectionContext, ProgramConnectionProvider, useProgram } from '@/contexts/ProgramProvider';
 import { getProvider } from '@project-serum/anchor';
 import { AnchorTwoTone } from '@mui/icons-material';
+import { startOfWeekYearWithOptions } from 'date-fns/fp';
 
 // Use require instead of import since order matters
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -82,7 +83,7 @@ function Overview() {
     <ConnectionProvider endpoint={endpoint}>
       <IPFSConnectionProvider>
       <WalletProvider wallets={wallets} autoConnect>
-      <WalletModalProvider>      
+      <WalletModalProvider>
       <ProgramConnectionProvider connection={useConnection().connection} wallet={useAnchorWallet()} programId={PROGRAM_ID} >
     <OverviewWrapper>
       <Head>
@@ -115,7 +116,7 @@ function Overview() {
       <Splash />
       <Footer />
     </OverviewWrapper>
-    </ProgramConnectionProvider>  
+    </ProgramConnectionProvider>}
     </WalletModalProvider>
     </WalletProvider>
     </IPFSConnectionProvider>

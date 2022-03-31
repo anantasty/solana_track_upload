@@ -193,8 +193,8 @@ function Splash() {
               <b>Built with IPFS </b>
               <Typography component="span" variant="subtitle2">
                 {' '}
-                - IPFS lets users host their files and make them accessible to everyone.
-                Decentralized from the cote.
+                - IPFS lets users host their files and make them accessible to
+                everyone. Decentralized from the cote.
               </Typography>
             </Typography>
           </ListItemWrapper>
@@ -213,7 +213,7 @@ function Splash() {
               <b>Powered by Solana</b>
               <Typography component="span" variant="subtitle2">
                 {' '}
-                - Powered by Solana based Programs(Smart Contract). 
+                - Powered by Solana based Programs(Smart Contract).
               </Typography>
             </Typography>
           </ListItemWrapper>

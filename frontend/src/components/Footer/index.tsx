@@ -19,9 +19,7 @@ function Footer() {
         justifyContent="space-between"
       >
         <Box>
-          <Typography variant="subtitle1">
-            Hosted by Us
-          </Typography>
+          <Typography variant="subtitle1">Hosted by Us</Typography>
         </Box>
         <Typography
           sx={{
