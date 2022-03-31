@@ -20,7 +20,9 @@ import {
   Drawer,
   styled,
   useTheme,
-  TableContainer
+  TableContainer,
+  CardMedia,
+  CircularProgress
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { formatDistance, subDays } from 'date-fns';
@@ -36,10 +38,15 @@ import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
 import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { ProgramContextState, useProgram } from '@/contexts/ProgramProvider';
+import fallback from "../../../../public/static/images/svg/unavailable.svg"
+import { ImagesConnectionProvider } from '@/contexts/UserDataProvider';
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
+import { useIPFSConnection } from '@/contexts/IpfsContext';
 
 const CardActionAreaWrapper = styled(CardActionArea)(
   ({ theme }) => `
-      height: ${theme.spacing(18)};
+      height: ${theme.spacing(22)};
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       overflow: hidden;
@@ -69,7 +76,7 @@ const CardActionAreaWrapper = styled(CardActionArea)(
 `
 );
 
-function QuickAccess() {
+function QuickAccess(programState: ProgramContextState) {
   const { t }: { t: any } = useTranslation();
   const theme = useTheme();
 
@@ -115,20 +122,24 @@ function QuickAccess() {
       <Grid container spacing={3}>
         {tabs === 'grid_view' && (
           <>
+            <ImagesConnectionProvider>
             <Grid item xs={12} sm={6}>
               <Card>
                 <CardActionAreaWrapper onClick={handleDrawerToggle}>
-                  <Typography
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: `${theme.typography.pxToRem(55)}`
-                    }}
-                    color="text.secondary"
-                  >
-                    <TextSnippetTwoToneIcon fontSize="inherit" />
-                  </Typography>
+                {true ? (
+                      <CardMedia
+                        component="video" //{getMediaType(link)}
+                        onError={e=> {e.target.onerror=null; e.target.src=fallback}}
+                        src="https://file-examples.com/wp-content/uploads/2020/03/file_example_WEBM_640_1_4MB.webm" // {link}
+                        sx={{height: "100%"}}
+                        autoPlay
+                        controls
+                      />
+                    ) : (
+                      <div>
+                        <CircularProgress color="secondary" />
+                      </div>
+                    )}
                 </CardActionAreaWrapper>
                 <Divider />
                 <CardActions
@@ -167,6 +178,7 @@ function QuickAccess() {
                 </CardActions>
               </Card>
             </Grid>
+            </ImagesConnectionProvider>
             <Grid item xs={12} sm={6}>
               <Card>
                 <CardActionAreaWrapper onClick={handleDrawerToggle}>
