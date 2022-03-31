@@ -81,10 +81,11 @@ function Overview() {
   );
   return (
     <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>      
       <IPFSConnectionProvider>
-      <WalletProvider wallets={wallets} autoConnect>
+
       <WalletModalProvider>
-      <ProgramConnectionProvider connection={useConnection().connection} wallet={useAnchorWallet()} programId={PROGRAM_ID} >
+      <ProgramConnectionProvider programId={PROGRAM_ID} >
     <OverviewWrapper>
       <Head>
         <title>P2P Image Share</title>
@@ -118,8 +119,8 @@ function Overview() {
     </OverviewWrapper>
     </ProgramConnectionProvider>}
     </WalletModalProvider>
-    </WalletProvider>
     </IPFSConnectionProvider>
+    </WalletProvider>    
     </ConnectionProvider>
   );
 }
